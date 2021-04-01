@@ -159,8 +159,8 @@ code block to the corresponding entries in *CHAR-DATABASE*."
           (setf (code-block* char-info) code-block))))))
 
 (defun read-word-breaks ()
-  "Parses the file \"Scripts.txt\" and adds the information about the
-script to the corresponding entries in *CHAR-DATABASE*."
+  "Parses the file \"WordBreakProperty.txt\" and adds the information
+about the word breaks to the corresponding entries in *CHAR-DATABASE*."
   (with-unicode-codepoint-file ((code-point-range (word-break symbol)) "auxiliary/WordBreakProperty.txt")
     ;;(pushnew word-break *word-breaks* :test #'eq)
     (with-code-point-range (code-point code-point-range)
@@ -170,8 +170,8 @@ script to the corresponding entries in *CHAR-DATABASE*."
 
 
 (defun read-idna-mapping ()
-  "Parses the file \"Scripts.txt\" and adds the information about the
-script to the corresponding entries in *CHAR-DATABASE*."
+  "Parses the file \"IdnaMappingTable.txt\" and adds the information
+about the idna-mapping to the corresponding entries in *CHAR-DATABASE*."
   (with-unicode-codepoint-file ((code-point-range
                                  (mapping-type symbol)
                                  (mapped-to hex-list nil)
