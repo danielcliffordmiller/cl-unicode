@@ -144,7 +144,9 @@ using DUMP-METHOD."
     (dump-method 'binary-props 'binary-props* out #'equal)
     (dump-method 'idna-mapping 'idna-mapping* out #'equal)
     (dump-method 'decomposition-mapping 'decomposition-mapping* out #'equal)
-    (dump-method 'case-folding-mapping 'case-folding-mapping* out #'equal)))
+    (dump-method 'case-folding-mapping 'case-folding-mapping* out #'equal)
+    (dump-method 'joining-type 'joining-type* out)
+    (dump-method 'joining-group 'joining-group* out)))
 
 (defun dump-hash-table (hash-table-name stream)
   "Writes code to the STREAM which reinitializes the hash table

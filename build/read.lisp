@@ -293,6 +293,30 @@ case folding rules to the corresponding entries in *CHAR-DATABASE*."
                                                       :case-folding-mapping (list mapping))
                   (aref *char-database* code-point) char-info))))))
 
+(defun read-arabic-shaping ()
+  "Parses the file \"ArabicShaping.txt\" and adds the information about
+the arabic shaping and joining-types to the corresponding entries
+in *CHAR-DATABASE*."
+  (with-unicode-codepoint-file ((code-point-range
+				 _
+				 (joining-type symbol)
+				 (joining-group symbol))
+				"ArabicShaping.txt")
+    (with-code-point-range (code-point code-point-range)
+      (let ((char-info (aref *char-database* code-point)))
+	(setf (slot-value char-info 'joining-type) joining-type
+	      (joining-group* char-info) joining-group)))))
+
+(defun joining-type* (char-info)
+  "Reader for the Joining_Type property to handle code points not listed
+in \"ArabicShaping.txt\""
+  (let ((joining-type (slot-value char-info 'joining-type)))
+    (cond (joining-type joining-type)
+	  ((find (general-category* char-info) '("Mn" "Me" "Cf")
+		 :test #'string=)
+	   (property-symbol "T"))
+	  (t (property-symbol "U")))))
+
 (defun default-bidi-class (char-info)
   "Returns the default Bidi class for the character described by the
 CHAR-INFO object CHAR-INFO.  The default is computed as explained in
@@ -345,6 +369,7 @@ source code files for CL-UNICODE."
   (read-idna-mapping)
   (read-special-casing)
   (read-case-folding-mapping)
+  (read-arabic-shaping)
   (set-default-bidi-classes)
   (add-hangul-decomposition))
 
